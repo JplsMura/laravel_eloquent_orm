@@ -13,4 +13,10 @@ class Post extends Model
 
 //    public const CREATED_AT = "creation_date";
 //    public const UPDATED_AT = "last_update";
+
+    //Lista branca de todos os campos que podem para o banco de dados através de um array
+    protected $fillable = ['title', 'subtitle', 'description'];
+
+    //Seria uma lista negra do que não pode ir ao banco de dados
+    protected $guarded = [];
 }

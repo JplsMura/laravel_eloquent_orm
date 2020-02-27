@@ -98,7 +98,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+        return view('posts.create');
     }
 
     /**
@@ -109,7 +109,40 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Object - Propriedade - Save
+//        $post = new Post;
+//        $post->title = $request->title;
+//        $post->subtitle = $request->subtitle;
+//        $post->description = $request->description;
+//        $post->save();
+
+        //Masse assagine. ou preenchimento em massa
+//        Post::create([
+//            'title' => $request->title,
+//            'subtitle' => $request->subtitle,
+//            'description' => $request->description
+//        ]);
+
+        /*firstOrNew: Funciona como um where, ele no primeiro nó de array verifica se existe por exemplo o title
+        que está vindo dentro do request, caso não exista ele inseri caso exista ele não faz nada....*/
+//        $post = Post::firstOrNew([
+//            'title' => 'teste2',
+//            'subtitle' => 'teste3',
+//        ], [
+//            'description' => 'teste2'
+//        ]);
+//        $post->save();
+
+        /*firstOrCreate: Ele insere o registro caso não encontre por padrão, diferente do firstOrNew que precisa do
+        método save, para persistir os dados no banco de dados..., porém caso não exista ele não iria ser criado*/
+        $post = Post::firstOrCreate([
+            'title' => 'teste4',
+            'subtitle' => 'teste4',
+        ], [
+            'description' => 'teste4'
+        ]);
+
+        var_dump($post);
     }
 
     /**
