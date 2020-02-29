@@ -20,7 +20,7 @@ class PostController extends Controller
             trazendo os registro em order descrecente passando como parametro o title e trazendo um coleção de registros
             com o GET()
         */
-//        $posts = Post::where('created_at', '>=', date('Y-m-d H:i:s'))->orderBy('title',  'desc')->get();
+        //$posts = Post::where('created_at', '>=', date('Y-m-d H:i:s'))->orderBy('title',  'desc')->get();
 //        foreach ($posts as $post){
 //            echo "<h1>{$post->title}</h1>";
 //            echo "<h2>{$post->subtitle}</h2>";
@@ -110,13 +110,13 @@ class PostController extends Controller
     public function store(Request $request)
     {
         //Object - Propriedade - Save
-//        $post = new Post;
-//        $post->title = $request->title;
-//        $post->subtitle = $request->subtitle;
-//        $post->description = $request->description;
-//        $post->save();
+        $post = new Post;
+        $post->title = $request->title;
+        $post->subtitle = $request->subtitle;
+        $post->description = $request->description;
+        $post->save();
 
-        //Masse assagine. ou preenchimento em massa
+        //Mass Assigment. ou preenchimento em massa
 //        Post::create([
 //            'title' => $request->title,
 //            'subtitle' => $request->subtitle,
@@ -135,14 +135,14 @@ class PostController extends Controller
 
         /*firstOrCreate: Ele insere o registro caso não encontre por padrão, diferente do firstOrNew que precisa do
         método save, para persistir os dados no banco de dados..., porém caso não exista ele não iria ser criado*/
-        $post = Post::firstOrCreate([
-            'title' => 'teste4',
-            'subtitle' => 'teste4',
-        ], [
-            'description' => 'teste4'
-        ]);
+//        $post = Post::firstOrCreate([
+//            'title' => 'teste4',
+//            'subtitle' => 'teste4',
+//        ], [
+//            'description' => 'teste4'
+//        ]);
 
-        var_dump($post);
+        return view('posts.index');
     }
 
     /**
@@ -164,7 +164,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        //
+        return view('posts.edit', ['post' => $post]);
     }
 
     /**
@@ -176,7 +176,40 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        //
+        /*Fazendo a omissão da nova instancia de obj post, ira funcionar da mesma forma por o obj já foi passado,
+        e essa é a forma mais usada no dia a dia para a atualização de registros, pois é praticamente a mesma coisa
+        que no cadastro de registros*/
+//        $post = new Post;
+        $post->title = $request->title;
+        $post->subtitle = $request->subtitle;
+        $post->description = $request->description;
+        $post->save();
+
+        //Outra forma de fazer a atualização do registro é alimentando novamente a varivel post com o id pelo find
+//        $post = Post::find($post->id);
+//        $post->title = $request->title;
+//        $post->subtitle = $request->subtitle;
+//        $post->description = $request->description;
+//        $post->save();
+
+        /*O updateOrCreate ele atualiza caso encontre o registro e caso não encontre o mesmo, ele o cria,
+        o primeira passagem de parametros dentro do conchetes, é como se fosse o WHERE ele está verificando o registro
+        e caso o encontre ele só atualiza com os parametros que são passados e caso não encontre ele o cria*/
+//        $post = Post::updateOrCreate([
+//            'title' => 'teste5'
+//        ], [
+//            'subtitle' => 'teste5',
+//            'description' => 'teste5'
+//        ]);
+
+        /*Atalização em massa, de varios registro passando o parametro WHERE, e atualizando somente o campo
+        description por exemplo, o mesmo deve ser feito com muita responsabilidade pois caso seje passado algum
+        parametro dentro do where de forma equivocada o mesmo ira atualizar  registros que não deveriam,
+        o exemplo abaixo está atualizando registro que são com datas maiores a data de hoje*/
+//        Post::where('created_at', '>=', date('Y-m-d H:i:s'))->update(['description' => 'teste da descrição']);
+
+        return redirect()->route('posts.index');
+
     }
 
     /**
