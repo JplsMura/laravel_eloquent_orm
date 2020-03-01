@@ -22,20 +22,26 @@
         <?php
             foreach ($posts as $post){
         ?>
-        <article class="mb-5">
-            <h1>{{ $post->title }}</h1>
-            <h2>{{ $post->subtitle }}</h2>
-            <p>{{ $post->description }}</p>
-            <small>
-                Criado em: {{ date('d/m/Y H:i', strtotime($post->created_at))  }} -
-                Editado em: {{ date('d/m/Y H:i', strtotime($post->updated_at))  }}
-            </small>
-
-            <p>
-                <a href="{{ route('posts.edit', ['id' => $post->id]) }}" class="btn btn-primary">Editar</a>
-            </p>
-        </article>
         <hr>
+            <article class="mb-5">
+                <h1>{{ $post->title }}</h1>
+                <h2>{{ $post->subtitle }}</h2>
+                <p>{{ $post->description }}</p>
+                <small>
+                    Criado em: {{ date('d/m/Y H:i', strtotime($post->created_at))  }} -
+                    Editado em: {{ date('d/m/Y H:i', strtotime($post->updated_at))  }}
+                </small>
+
+                <form action="{{ route('posts.destroy', ['id' => $post->id])  }}" method="POST" class="mt-3">
+                    @csrf
+                    @method('DELETE')
+
+                    <a href="{{ route('posts.edit', ['id' => $post->id]) }}" class="btn btn-primary">Editar</a>
+
+                    <button class="btn btn-danger">Excluir</button>
+                </form>
+
+            </article>
         <?php
         }
         ?>

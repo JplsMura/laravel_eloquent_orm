@@ -220,6 +220,20 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        //
+        //Deleção passando o find o ID do usuário ao qual quero que seje deletado
+//        Post::find($post->id)->delete();
+
+        //Deleção em massa de mais de um registro, passando dentro de um array quais são os registros
+//        Post::destroy([10, 11]);
+
+        //Esclusão passando o ID do usuário diretamento dentro do método destroy
+        //Versão mais usada no dia a dia claro, fazendo um tratamento avisando ao usuário que o registro será deletado
+        Post::destroy($post->id);
+
+        //Outra forma de exclusão em massa passando parametro WHERE para determinar qual a ação,
+        //nesse caso excluindo registro com a data maior que a do dia atual
+//        Post::where('created_at', '>=', date('Y-m-d H:i:s'))->delete();
+
+        return redirect()->route('posts.index');
     }
 }
