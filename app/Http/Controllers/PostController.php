@@ -7,6 +7,31 @@ use Illuminate\Http\Request;
 
 class PostController extends Controller
 {
+    public function forceDelete($post)
+    {
+        Post::onlyTrashed()->where(['id' => $post])->forceDelete();
+
+        return redirect()->route('posts.trashed');
+    }
+
+    public function restore($post)
+    {
+        $post = Post::onlyTrashed()->where(['id' => $post])->first();
+
+        if($post->trashed()) {
+            $post->restore();
+        }
+        return redirect()->route('posts.trashed');
+    }
+
+    public function trashed()
+    {
+        //Retorna somente os arquivos que estão marcados como exclusos no banco de dados
+        $posts = Post::onlyTrashed()->get();
+
+        return view ('posts.trashed', ['posts' => $posts]);
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -85,6 +110,9 @@ class PostController extends Controller
 //        $posts = Post::where('created_at', '>=', date('Y-m-d H:i:s'))->max('title');
 //        $posts = Post::where('created_at', '>=', date('Y-m-d H:i:s'))->min('title');
 
+        //Retorna todos os registris, inclusive os registro marcados com deletados no banco de dados
+//        $post = Post::withTrashed()->get();
+
         /*Seleciona todos os registro de POSTS*/
         $posts = Post::all();
 
@@ -142,7 +170,7 @@ class PostController extends Controller
 //            'description' => 'teste4'
 //        ]);
 
-        return view('posts.index');
+        return redirect()->route('posts.index');
     }
 
     /**
